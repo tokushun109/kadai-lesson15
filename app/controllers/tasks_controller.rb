@@ -4,7 +4,7 @@ class TasksController < ApplicationController
     before_action :correct_user, only: [:update, :destroy]
     
     def index
-        @tasks = Task.all.page(params[:page])
+        @tasks = Task.where(user_id: current_user.id)
     end
 
     def show
@@ -18,7 +18,7 @@ class TasksController < ApplicationController
     @task = current_user.tasks.build(task_params)
     if @task.save
       flash[:success] = 'タスクを追加しました。'
-      redirect_to root_url
+      redirect_to user_path(current_user)
     else
       @tasks = current_user.tasks.order(id: :desc).page(params[:page])
       flash.now[:danger] = 'タスクの追加に失敗しました。'
@@ -43,7 +43,7 @@ class TasksController < ApplicationController
         @task.destroy
         
         flash[:success] = 'タスクを削除しました'
-        redirect_to tasks_url
+        redirect_to root_url
     end
     
     private

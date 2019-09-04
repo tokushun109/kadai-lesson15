@@ -5,7 +5,6 @@
         <thead>
             <tr>
                 <th>タスク名</th>
-                <th>書き込みユーザー</th>
                 <th>状態</th>
             </tr>
         </thead>
@@ -13,7 +12,6 @@
             <% @tasks.each do |task| %>
             <tr>
                 <td><%= link_to task.content, task %></td>
-                <td><%= link_to task.user.name, task %></td>
                 <td><%= link_to task.status, task %></td>
             </tr>
             <% end %>

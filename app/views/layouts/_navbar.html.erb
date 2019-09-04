@@ -1,7 +1,7 @@
 
 <header class="mb-4">
   <nav class="navbar navbar-expand-sm navbar-dark bg-info">
-    <a class="navbar-brand" href="/">タスク管理アプリ</a>
+    <%= link_to 'タスク管理アプリ', root_path ,class:'navbar-brand' %>
     <!-- 横幅が狭い時に出るハンバーガーボタン -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
       <span class="navbar-toggler-icon"></span>
@@ -11,7 +11,6 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
       <ul class="navbar-nav">
         <% if logged_in? %>
-        <li class="nav-item"><%= link_to 'ユーザー一覧', users_path, class: 'nav-link' %></li>
         <li class="nav-item"><%= link_to '新規タスクの追加', new_task_path, class: 'nav-link' %></li>
         <li class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><%= current_user.name %></a>
