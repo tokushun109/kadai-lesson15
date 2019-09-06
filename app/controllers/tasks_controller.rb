@@ -1,7 +1,8 @@
 class TasksController < ApplicationController
     before_action :set_task,only:[:show, :edit ,:update, :destroy]
+    before_action :check_user, only: [:show, :edit, :update, :destroy]
     before_action :require_user_logged_in
-    before_action :correct_user, only: [:update, :destroy]
+    before_action :correct_user, only: [:destroy]
     
     def index
         @tasks = Task.where(user_id: current_user.id)
@@ -15,16 +16,16 @@ class TasksController < ApplicationController
     end
 
     def create
-    @task = current_user.tasks.build(task_params)
-    if @task.save
-      flash[:success] = 'タスクを追加しました。'
-      redirect_to user_path(current_user)
-    else
-      @tasks = current_user.tasks.order(id: :desc).page(params[:page])
-      flash.now[:danger] = 'タスクの追加に失敗しました。'
-      render :show
+        @task = current_user.tasks.build(task_params)
+        if @task.save
+          flash[:success] = 'タスクを追加しました。'
+          redirect_to @task
+        else
+          @tasks = current_user.tasks.order(id: :desc).page(params[:page])
+          flash.now[:danger] = 'タスクの追加に失敗しました。'
+          render :new
+        end
     end
-  end
 
     def edit
     end
@@ -54,13 +55,15 @@ class TasksController < ApplicationController
     def set_task
         @task = Task.find(params[:id])
     end
+    
+    def check_user
+        redirect_to root_url if @task.user != current_user
+    end
 
     def correct_user
         @task = current_user.tasks.find_by(id: params[:id])
         unless @task
-        redirect_to root_url
+            redirect_to root_url
         end
     end
 end
-
-

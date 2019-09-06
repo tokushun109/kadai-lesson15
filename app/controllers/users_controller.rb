@@ -1,10 +1,4 @@
 class UsersController < ApplicationController
-before_action :require_user_logged_in, only: [:show]
-
-  def show
-    @user = User.find(params[:id])
-    @tasks = @user.tasks.order(id: :desc).page(params[:page])
-  end
 
   def new
     @user = User.new
@@ -14,7 +8,7 @@ before_action :require_user_logged_in, only: [:show]
     @user = User.new(user_params)
     if @user.save
       flash[:success]='ユーザー登録しました'
-      redirect_to @user
+      redirect_to login_path
     else
       flash.now[:danger]='ユーザーの登録に失敗しました'
       render :new
